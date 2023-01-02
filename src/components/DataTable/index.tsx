@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+import { v4 as uuid } from 'uuid';
 import {
   Table,
   Tbody,
@@ -24,29 +24,16 @@ import {
   Heading,
   useBreakpoint,
 } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
-import {
-  useTable,
-  usePagination,
-  useSortBy,
-  Row,
-  TableInstance,
-  UsePaginationInstanceProps,
-  UseSortByInstanceProps,
-  UsePaginationState,
-} from 'react-table';
-import { v4 as uuid } from 'uuid';
+import { ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 // @ts-ignore
-import SortIcon from './SortIcon';
+import { useTable, usePagination, useSortBy, Row } from 'react-table';
+import { useTranslation } from 'react-i18next';
 import LoadingOverlay from 'components/LoadingOverlay';
 import { Column, PageInfo } from 'models/Table';
+import SortIcon from './SortIcon';
 
-const defaultProps = {
-  sortBy: [],
-};
-
-type DataTableProps = {
-  columns: readonly Column<object>[];
+interface Props {
+  columns: Column[];
   data: object[];
   count?: number;
   setPageInfo?: React.Dispatch<React.SetStateAction<PageInfo | undefined>>;
@@ -55,20 +42,26 @@ type DataTableProps = {
   sortBy?: { id: string; desc: boolean }[];
   hiddenColumns?: string[];
   hideControls?: boolean;
-  minHeight?: string | number;
+  minHeight?: string;
   fullScreen?: boolean;
   isManual?: boolean;
   saveSettingsId?: string;
-  showAllRows?: boolean;
+}
+
+const defaultProps = {
+  count: undefined,
+  setPageInfo: undefined,
+  isLoading: false,
+  minHeight: undefined,
+  fullScreen: false,
+  sortBy: [],
+  hiddenColumns: [],
+  hideControls: false,
+  isManual: false,
+  saveSettingsId: undefined,
 };
 
-type TableInstanceWithHooks<T extends object> = TableInstance<T> &
-  UsePaginationInstanceProps<T> &
-  UseSortByInstanceProps<T> & {
-    state: UsePaginationState<T>;
-  };
-
-const DataTable = ({
+const DataTable: React.FC<Props> = ({
   columns,
   data,
   isLoading,
@@ -82,31 +75,14 @@ const DataTable = ({
   setPageInfo,
   isManual,
   saveSettingsId,
-  showAllRows,
-}: DataTableProps) => {
+}) => {
   const { t } = useTranslation();
   const breakpoint = useBreakpoint();
   const textColor = useColorModeValue('gray.700', 'white');
   const getPageSize = () => {
-    try {
-      if (showAllRows) return 1000000;
-      const saved = saveSettingsId ? localStorage.getItem(saveSettingsId) : undefined;
-      if (saved) return Number.parseInt(saved, 10);
-      return 10;
-    } catch {
-      return 10;
-    }
-  };
-  const getPageIndex = () => {
-    try {
-      if (saveSettingsId) {
-        const saved = localStorage.getItem(`${saveSettingsId}.page`);
-        if (saved) return Number.parseInt(saved, 10);
-      }
-      return 0;
-    } catch {
-      return 0;
-    }
+    const saved = saveSettingsId ? localStorage.getItem(saveSettingsId) : undefined;
+    if (saved) return Number.parseInt(saved, 10);
+    return 10;
   };
   const [queryPageSize, setQueryPageSize] = useState(getPageSize());
 
@@ -128,49 +104,25 @@ const DataTable = ({
     state: { pageIndex, pageSize },
   } = useTable(
     {
-      // @ts-ignore
       columns,
       data,
-      // @ts-ignore
       initialState: { sortBy, pagination: !hideControls, pageSize: queryPageSize },
       manualPagination: isManual,
-      pageCount:
-        isManual && count !== undefined
-          ? Math.ceil(count / queryPageSize)
-          : Math.ceil(data?.length ?? 0 / queryPageSize),
+      pageCount: isManual && count !== undefined ? Math.ceil(count / queryPageSize) : undefined,
     },
     useSortBy,
     usePagination,
-  ) as TableInstanceWithHooks<object>;
-
-  const handleGoToPage = (newPage: number) => {
-    if (saveSettingsId) localStorage.setItem(`${saveSettingsId}.page`, String(newPage));
-    gotoPage(newPage);
-  };
-  const handleNextPage = () => {
-    nextPage();
-    if (saveSettingsId) localStorage.setItem(`${saveSettingsId}.page`, String(pageIndex + 1));
-  };
-  const handlePreviousPage = () => {
-    previousPage();
-    if (saveSettingsId) localStorage.setItem(`${saveSettingsId}.page`, String(pageIndex - 1));
-  };
+  );
 
   useEffect(() => {
     if (setPageInfo && pageIndex !== undefined) setPageInfo({ index: pageIndex, limit: queryPageSize });
   }, [queryPageSize, pageIndex]);
 
   useEffect(() => {
-    // @ts-ignore
     if (saveSettingsId) localStorage.setItem(saveSettingsId, pageSize);
     setQueryPageSize(pageSize);
   }, [pageSize]);
 
-  useEffect(() => {
-    if (isManual && count !== undefined) {
-      gotoPage(getPageIndex());
-    }
-  }, [count]);
   useEffect(() => {
     if (hiddenColumns) setHiddenColumns(hiddenColumns);
   }, [hiddenColumns]);
@@ -203,7 +155,6 @@ const DataTable = ({
       </Center>
     );
   }
-
   // Render the UI for your table
   return (
     <>
@@ -235,7 +186,6 @@ const DataTable = ({
                               alignContent: 'center',
                               overflow: 'hidden',
                               whiteSpace: 'nowrap',
-                              // @ts-ignore
                               paddingTop: column.canSort ? '' : '4px',
                             }}
                           >
@@ -314,7 +264,7 @@ const DataTable = ({
             <Tooltip label={t('table.first_page')}>
               <IconButton
                 aria-label="Go to first page"
-                onClick={() => handleGoToPage(0)}
+                onClick={() => gotoPage(0)}
                 isDisabled={!canPreviousPage}
                 icon={<ArrowLeftIcon h={3} w={3} />}
                 mr={4}
@@ -323,7 +273,7 @@ const DataTable = ({
             <Tooltip label={t('table.previous_page')}>
               <IconButton
                 aria-label="Previous page"
-                onClick={handlePreviousPage}
+                onClick={previousPage}
                 isDisabled={!canPreviousPage}
                 icon={<ChevronLeftIcon h={6} w={6} />}
               />
@@ -352,7 +302,7 @@ const DataTable = ({
                   max={pageOptions.length}
                   onChange={(_: unknown, numberValue: number) => {
                     const newPage = numberValue ? numberValue - 1 : 0;
-                    handleGoToPage(newPage);
+                    gotoPage(newPage);
                   }}
                   defaultValue={pageIndex + 1}
                 >
@@ -383,7 +333,7 @@ const DataTable = ({
             <Tooltip label={t('table.next_page')}>
               <IconButton
                 aria-label="Go to next page"
-                onClick={handleNextPage}
+                onClick={nextPage}
                 isDisabled={!canNextPage}
                 icon={<ChevronRightIcon h={6} w={6} />}
               />
@@ -391,7 +341,7 @@ const DataTable = ({
             <Tooltip label={t('table.last_page')}>
               <IconButton
                 aria-label="Go to last page"
-                onClick={() => handleGoToPage(pageCount - 1)}
+                onClick={() => gotoPage(pageCount - 1)}
                 isDisabled={!canNextPage}
                 icon={<ArrowRightIcon h={3} w={3} />}
                 ml={4}
@@ -406,4 +356,4 @@ const DataTable = ({
 
 DataTable.defaultProps = defaultProps;
 
-export default React.memo(DataTable);
+export default DataTable;

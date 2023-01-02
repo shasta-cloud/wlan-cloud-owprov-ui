@@ -14,20 +14,17 @@ import {
   Tooltip,
   IconButton,
 } from '@chakra-ui/react';
-import { Formik } from 'formik';
-import { Trash } from 'phosphor-react';
 import { useTranslation } from 'react-i18next';
-import CloseButton from 'components/Buttons/CloseButton';
-import SaveButton from 'components/Buttons/SaveButton';
-import DataTable from 'components/DataTable';
-import ModalHeader from 'components/Modals/ModalHeader';
 import { FieldInputProps } from 'models/Form';
+import { Trash } from 'phosphor-react';
+import { Formik } from 'formik';
+import ModalHeader from 'components/Modals/ModalHeader';
+import SaveButton from 'components/Buttons/SaveButton';
+import CloseButton from 'components/Buttons/CloseButton';
+import DataTable from 'components/DataTable';
 import { Column } from 'models/Table';
-
-interface ObjectArrayFieldModalOptions {
-  buttonLabel?: string;
-  modalTitle?: string;
-}
+// eslint-disable-next-line import/no-cycle
+import { ObjectArrayFieldModalOptions } from '.';
 
 interface Props extends FieldInputProps<object[]> {
   name: string;
@@ -36,29 +33,27 @@ interface Props extends FieldInputProps<object[]> {
   isHidden: boolean;
   hideLabel: boolean;
   fields: React.ReactNode;
-  columns: Column<unknown>[];
+  columns: Column[];
   options: ObjectArrayFieldModalOptions;
   schema: (t: (e: string) => string, useDefault?: boolean) => object;
 }
 
-const ObjectArrayFieldInput = (
-  {
-    name,
-    label,
-    value,
-    onChange,
-    isError,
-    error,
-    fields,
-    isRequired,
-    isHidden,
-    schema,
-    columns,
-    isDisabled,
-    hideLabel,
-    options
-  }: Props
-) => {
+const ObjectArrayFieldInput: React.FC<Props> = ({
+  name,
+  label,
+  value,
+  onChange,
+  isError,
+  error,
+  fields,
+  isRequired,
+  isHidden,
+  schema,
+  columns,
+  isDisabled,
+  hideLabel,
+  options,
+}) => {
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [tempValue, setTempValue] = useState<object[]>([]);

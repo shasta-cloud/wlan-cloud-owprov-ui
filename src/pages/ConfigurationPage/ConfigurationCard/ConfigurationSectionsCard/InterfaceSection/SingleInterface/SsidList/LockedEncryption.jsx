@@ -1,14 +1,14 @@
 import React from 'react';
 import { Flex, FormControl, FormLabel, Heading, SimpleGrid } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import { ENCRYPTION_OPTIONS, INTERFACE_SSID_RADIUS_LOCAL_USER_SCHEMA } from '../../interfacesConstants';
 import DisplayNumberField from 'components/DisplayFields/DisplayNumberField';
 import DisplayObjectArrayField from 'components/DisplayFields/DisplayObjectArrayField';
 import DisplaySelectField from 'components/DisplayFields/DisplaySelectField';
 import DisplayStringField from 'components/DisplayFields/DisplayStringField';
 import DisplayToggleField from 'components/DisplayFields/DisplayToggleField';
-import NumberField from 'components/FormFields/NumberField';
 import StringField from 'components/FormFields/StringField';
+import NumberField from 'components/FormFields/NumberField';
+import { ENCRYPTION_OPTIONS, INTERFACE_SSID_RADIUS_LOCAL_USER_SCHEMA } from '../../interfacesConstants';
 
 const propTypes = {
   data: PropTypes.instanceOf(Object).isRequired,
@@ -56,14 +56,6 @@ const LockedEncryption = ({ data }) => {
               isRequired
             />
           )}
-          <DisplayToggleField
-            value={data?.encryption?.['key-caching']}
-            label="key-caching"
-            definitionKey="interface.ssid.encryption.key-caching"
-            isDisabled
-            isRequired
-            hideButton
-          />
         </SimpleGrid>
       )}
       {data?.radius && (

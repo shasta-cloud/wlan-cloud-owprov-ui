@@ -1,17 +1,12 @@
-import React, { useCallback, useState } from 'react';
 import { Heading } from '@chakra-ui/react';
 import { ActionMeta, InputActionMeta, Select, SingleValue } from 'chakra-react-select';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const MacSearchBar = (
-  {
-    macs,
-    setMac
-  }: {
-    macs?: string[]
-    setMac: React.Dispatch<React.SetStateAction<string | undefined>>
-  }
-) => {
+const MacSearchBar: React.FC<{ macs?: string[]; setMac: React.Dispatch<React.SetStateAction<string | undefined>> }> = ({
+  macs,
+  setMac,
+}) => {
   const { t } = useTranslation();
   const [inputValue, setInputValue] = useState('');
 

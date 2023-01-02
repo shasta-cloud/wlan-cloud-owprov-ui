@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-const ArrayCell = ({ arr }: { arr?: unknown[] }) => {
+const ArrayCell: React.FC<{ arr?: unknown[] }> = ({ arr }) => {
   const data = useMemo(() => {
     if (arr === undefined) return '';
 

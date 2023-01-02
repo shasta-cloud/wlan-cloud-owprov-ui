@@ -1,19 +1,14 @@
 import React from 'react';
-import { Flex, Heading, SimpleGrid, Spacer } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+import { Flex, SimpleGrid } from '@chakra-ui/react';
 import { v4 as uuid } from 'uuid';
-import SystemTile from './SystemTile';
-import RefreshButton from 'components/Buttons/RefreshButton';
-import Card from 'components/Card';
-import CardHeader from 'components/Card/CardHeader';
-import { useAuth } from 'contexts/AuthProvider';
-import { useGetEndpoints } from 'hooks/Network/Endpoints';
 import { axiosSec } from 'utils/axiosInstances';
+import { useGetEndpoints } from 'hooks/Network/Endpoints';
+import { useAuth } from 'contexts/AuthProvider';
+import SystemTile from './SystemTile';
 
 const SystemPage = () => {
-  const { t } = useTranslation();
   const { token, isUserLoaded } = useAuth();
-  const { data: endpoints, refetch, isFetching } = useGetEndpoints({ onSuccess: () => {} });
+  const { data: endpoints } = useGetEndpoints({ onSuccess: () => {} });
 
   const endpointsList = React.useMemo(() => {
     if (!endpoints || !token || !isUserLoaded) return null;
@@ -36,23 +31,15 @@ const SystemPage = () => {
       .map((endpoint) => <SystemTile key={uuid()} endpoint={endpoint} token={token} />);
   }, [endpoints, token, isUserLoaded]);
 
-  if (!isUserLoaded) return null;
-
   return (
     <Flex flexDirection="column" pt="75px">
-      <Card mb={4} py={2} px={4}>
-        <CardHeader>
-          <Heading size="md" my="auto">
-            {t('controller.firmware.endpoints')}
-          </Heading>
-          <Spacer />
-          <RefreshButton onClick={refetch} isFetching={isFetching} />
-        </CardHeader>
-      </Card>
-      <SimpleGrid minChildWidth="500px" spacing="20px" mb={3}>
-        {endpointsList}
-      </SimpleGrid>
+      {isUserLoaded ? (
+        <SimpleGrid minChildWidth="500px" spacing="20px" mb={3}>
+          {endpointsList}
+        </SimpleGrid>
+      ) : null}
     </Flex>
   );
 };
+
 export default SystemPage;

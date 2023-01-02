@@ -1,21 +1,21 @@
 import React, { useCallback, useState } from 'react';
-import { Box, useDisclosure } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
 import { v4 as uuid } from 'uuid';
-import Actions from './Actions';
-import UseExistingContactModal from './UseExistingModal';
-import ContactTable from 'components/Tables/ContactTable';
+import { Box, useDisclosure } from '@chakra-ui/react';
+import { useQueryClient } from 'react-query';
 import CreateContactModal from 'components/Tables/ContactTable/CreateContactModal';
 import EditContactModal from 'components/Tables/ContactTable/EditContactModal';
-import { useAddVenueContact } from 'hooks/Network/Venues';
-import { Contact } from 'models/Contact';
+import ContactTable from 'components/Tables/ContactTable';
 import { Venue } from 'models/Venue';
+import { Contact } from 'models/Contact';
+import { useAddVenueContact } from 'hooks/Network/Venues';
+import Actions from './Actions';
+import UseExistingContactModal from './UseExistingModal';
 
 interface Props {
   venue?: Venue;
 }
 
-const VenueContactTableWrapper = ({ venue }: Props) => {
+const VenueContactTableWrapper: React.FC<Props> = ({ venue }) => {
   const queryClient = useQueryClient();
   const [contact, setContact] = useState<Contact | undefined>(undefined);
   const [refreshId, setRefreshId] = useState(0);

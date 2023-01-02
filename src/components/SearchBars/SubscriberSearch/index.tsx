@@ -1,15 +1,15 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Flex, Input, Select as ChakraSelect } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { useSubscriberSearch } from 'contexts/ProvisioningSocketProvider/hooks/Commands/useSubscriberSearch';
+import { Flex, Input, Select as ChakraSelect } from '@chakra-ui/react';
 import { Subscriber } from 'models/Subscriber';
+import useSubscriberSearch from 'contexts/WebSocketProvider/hooks/Commands/useSubscriberSearch';
 
 interface Props {
   operatorId: string;
   setResults: Dispatch<SetStateAction<Subscriber[]>>;
 }
 
-const SubscriberSearch = ({ operatorId, setResults }: Props) => {
+const SubscriberSearch: React.FC<Props> = ({ operatorId, setResults }) => {
   const { t } = useTranslation();
   const [mode, setMode] = useState<'emailSearch' | 'nameSearch'>('emailSearch');
   const { results, onInputChange, isOpen, resetSearch } = useSubscriberSearch({

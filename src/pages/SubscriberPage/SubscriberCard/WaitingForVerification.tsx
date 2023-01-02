@@ -10,8 +10,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import WarningButton from 'components/Buttons/WarningButton';
 import { useSendSubscriberEmailValidation } from 'hooks/Network/Subscribers';
+import WarningButton from 'components/Buttons/WarningButton';
 
 interface Props {
   id: string;
@@ -25,14 +25,12 @@ const defaultProps = {
   isDisabled: false,
 };
 
-const WaitingForVerificationNotification = (
-  {
-    id,
-    isWaitingForEmailVerification,
-    isDisabled,
-    refresh
-  }: Props
-) => {
+const WaitingForVerificationNotification: React.FC<Props> = ({
+  id,
+  isWaitingForEmailVerification,
+  isDisabled,
+  refresh,
+}) => {
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const onSuccess = () => {

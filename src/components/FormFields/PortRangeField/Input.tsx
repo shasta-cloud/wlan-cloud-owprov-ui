@@ -23,19 +23,17 @@ interface Props {
   isRequired: boolean;
 }
 
-const PortRangeInput = (
-  {
-    label,
-    value: { mode, inputValue: value },
-    onChange,
-    onModeChange,
-    isError,
-    error,
-    isRequired,
-    isDisabled,
-    ...props
-  }: Props
-) => {
+const PortRangeInput: React.FC<Props> = ({
+  label,
+  value: { mode, inputValue: value },
+  onChange,
+  onModeChange,
+  isError,
+  error,
+  isRequired,
+  isDisabled,
+  ...props
+}) => {
   const onNumberChange = (_: string, numb: number) => {
     if (numb !== undefined) {
       onChange(Number.isNaN(numb) ? 0 : numb);

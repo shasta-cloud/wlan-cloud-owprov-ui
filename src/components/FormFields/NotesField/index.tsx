@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useCallback, useMemo, useState } from 'react';
-import { AddIcon } from '@chakra-ui/icons';
-import { IconButton, Input, InputGroup, InputRightElement, Tooltip } from '@chakra-ui/react';
-import { Trash } from 'phosphor-react';
 import { useTranslation } from 'react-i18next';
+import { IconButton, Input, InputGroup, InputRightElement, Tooltip } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
+import { Trash } from 'phosphor-react';
 import { v4 as uuid } from 'uuid';
-import DataTable from 'components/DataTable';
-import FormattedDate from 'components/FormattedDate';
 import { useAuth } from 'contexts/AuthProvider';
-import useFastField from 'hooks/useFastField';
 import { Note } from 'models/Note';
+import DataTable from 'components/DataTable';
+import useFastField from 'hooks/useFastField';
+import FormattedDate from 'components/FormattedDate';
 
 export interface NotesFieldProps {
   name?: string;
@@ -17,7 +17,7 @@ export interface NotesFieldProps {
   hasDeleteButton?: boolean;
 }
 
-const _NotesField = ({ name = 'notes', isDisabled, hasDeleteButton }: NotesFieldProps) => {
+const _NotesField: React.FC<NotesFieldProps> = ({ name = 'notes', isDisabled, hasDeleteButton }) => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { value: notes, onChange: setNotes } = useFastField({ name });
@@ -122,7 +122,7 @@ const _NotesField = ({ name = 'notes', isDisabled, hasDeleteButton }: NotesField
       </InputGroup>
       <DataTable
         columns={columns}
-        data={notes?.sort((a: Note, b: Note) => b.created - a.created)}
+        data={notes.sort((a: Note, b: Note) => b.created - a.created)}
         obj={hasDeleteButton ? undefined : t('common.notes')}
         minHeight="200px"
       />

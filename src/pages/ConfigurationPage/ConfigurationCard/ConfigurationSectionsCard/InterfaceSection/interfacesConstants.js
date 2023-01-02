@@ -1,4 +1,3 @@
-import { object, number, string, array, bool } from 'yup';
 import {
   isValidPortRange,
   isValidPortRanges,
@@ -6,10 +5,10 @@ import {
   testIpv6,
   testLeaseTime,
   testLength,
-  testRegex,
   testSelectPorts,
   testUcMac,
 } from 'constants/formTests';
+import { object, number, string, array, bool } from 'yup';
 
 export const DEFAULT_PASSPOINT_RADIUS = {
   authentication: {
@@ -74,26 +73,6 @@ export const CREATE_INTERFACE_SCHEMA = (t) =>
     name: string().required(t('form.required')).default(''),
     role: string().required(t('form.required')).default('upstream'),
   });
-
-export const INTERFACE_PASSPOINT_ICONS_SCHEMA = (t, useDefault = false) => {
-  const shape = object()
-    .shape({
-      width: number().required(t('form.required')).moreThan(-1).lessThan(65535).integer().default(64),
-      height: number().required(t('form.required')).moreThan(-1).lessThan(65535).integer().default(64),
-      icon: string().required(t('form.required')).default(''),
-      language: string()
-        .required(t('form.required'))
-        .test('test-passpoint-icon-lang', t('form.invalid_icon_lang'), (v) => testRegex(v, '^[a-z][a-z][a-z]$'))
-        .default('eng'),
-    })
-    .default({
-      width: 64,
-      height: 64,
-      language: 'eng',
-    });
-
-  return useDefault ? shape : shape.nullable().default(undefined);
-};
 
 export const INTERFACE_SSID_PASS_POINT_SCHEMA = (t, useDefault = false) => {
   const shape = object()
@@ -300,18 +279,7 @@ export const INTERFACE_SSID_ENCRYPTION_SCHEMA = (t, useDefault = false) => {
         .default('psk'),
       ieee80211w: string()
         .test('encryptionIeeeTest', t('form.invalid_ieee'), (v, { from }) => {
-          const { proto } = from[0].value;
-          if ((proto === 'owe' || proto === 'owe-transition') && v === 'disabled') {
-            return false;
-          }
-          return true;
-        })
-        .test('encryptionRequiredIeee', t('form.invalid_ieee_required'), (v, { from }) => {
-          const { proto } = from[0].value;
-          if (
-            (proto === 'wpa3' || proto === 'wpa3-192' || proto === 'wpa3-mixed' || proto === 'sae') &&
-            v !== 'required'
-          ) {
+          if ((from[0].value.proto === 'owe' || from[0].value.proto === 'owe-transition') && v === 'disabled') {
             return false;
           }
           return true;
@@ -324,7 +292,6 @@ export const INTERFACE_SSID_ENCRYPTION_SCHEMA = (t, useDefault = false) => {
           return v.length >= 8 && v.length <= 63;
         })
         .default(''),
-      'key-caching': bool().default(true),
     })
     .default({
       proto: 'psk',
@@ -347,24 +314,6 @@ export const INTERFACE_SSID_ROAMING_SCHEMA = (t, useDefault = false) => {
     .default({
       'message-exchange': 'ds',
       'generate-psk': false,
-    });
-
-  return useDefault ? shape : shape.nullable().default(undefined);
-};
-
-export const INTERFACE_SSID_ACCESS_CONTROL_LIST_SCHEMA = (t, useDefault = false) => {
-  const shape = object()
-    .shape({
-      mode: string().required(t('form.required')).default(''),
-      'mac-address': array()
-        .of(string().test('ssid.access-control-list.mac', t('form.invalid_mac_uc'), testUcMac))
-        .required(t('form.required'))
-        .min(1, t('form.required'))
-        .default([]),
-    })
-    .default({
-      mode: '',
-      'mac-address': [],
     });
 
   return useDefault ? shape : shape.nullable().default(undefined);
@@ -408,7 +357,6 @@ export const INTERFACE_SSID_SCHEMA = (t, useDefault = false) => {
     encryption: INTERFACE_SSID_ENCRYPTION_SCHEMA(t, useDefault),
     'rate-limit': INTERFACE_SSID_RATE_LIMIT_SCHEMA(t),
     rrm: INTERFACE_SSID_RRM_SCHEMA(t),
-    'access-control-list': INTERFACE_SSID_ACCESS_CONTROL_LIST_SCHEMA(t),
     roaming: INTERFACE_SSID_ROAMING_SCHEMA(t),
     radius: INTERFACE_SSID_RADIUS_SCHEMA(t),
     'pass-point': INTERFACE_SSID_PASS_POINT_SCHEMA(t),

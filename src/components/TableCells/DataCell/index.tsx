@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { bytesString } from 'utils/stringHelper';
 
-const DataCell = ({ bytes }: { bytes?: number }) => {
+const DataCell: React.FC<{ bytes?: number }> = ({ bytes }) => {
   const data = useMemo(() => {
     if (bytes === undefined) return '-';
 

@@ -17,7 +17,7 @@ interface Props {
   cancel: () => void;
 }
 
-const ConfirmIgnoreCommand = ({ modalProps: { isOpen }, confirm, cancel }: Props) => {
+const ConfirmIgnoreCommand: React.FC<Props> = ({ modalProps: { isOpen }, confirm, cancel }) => {
   const { t } = useTranslation();
   const cancelRef = useRef<HTMLButtonElement>(null);
 

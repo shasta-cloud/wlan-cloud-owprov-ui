@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import useGetRequirements from './Network/Requirements';
 import { secUrl } from 'utils/axiosInstances';
+import useGetRequirements from './Network/Requirements';
 
 const useApiRequirements = () => {
   const { data: requirements } = useGetRequirements();
@@ -9,7 +9,7 @@ const useApiRequirements = () => {
     if (!apiResult && isAccess) return `${secUrl.split('/api/v1')[0]}/wwwassets/access_policy.html`;
     if (!apiResult && !isAccess) return `${secUrl.split('/api/v1')[0]}/wwwassets/password_policy.html`;
 
-    if (apiResult?.startsWith('http')) return apiResult;
+    if (apiResult?.startsWith('https')) return apiResult;
     return `${secUrl.split('/api/v1')[0]}${apiResult}`;
   };
 

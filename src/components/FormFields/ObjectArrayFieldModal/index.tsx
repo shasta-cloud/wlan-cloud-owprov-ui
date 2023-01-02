@@ -1,22 +1,23 @@
 import React, { useCallback } from 'react';
-import ObjectArrayFieldInput from './Input';
 import useFastField from 'hooks/useFastField';
 import { FieldProps } from 'models/Form';
 import { Column } from 'models/Table';
+// eslint-disable-next-line import/no-cycle
+import ObjectArrayFieldInput from './Input';
 
-interface ObjectArrayFieldModalOptions {
+export interface ObjectArrayFieldModalOptions {
   buttonLabel?: string;
   modalTitle?: string;
 }
 
 interface Props extends FieldProps {
   fields: React.ReactNode;
-  columns: Column<unknown>[];
+  columns: Column[];
   options?: ObjectArrayFieldModalOptions;
   schema: (t: (e: string) => string, useDefault?: boolean) => object;
 }
 
-const ObjectArrayFieldModal = ({
+const ObjectArrayFieldModal: React.FC<Props> = ({
   name,
   label,
   fields,
@@ -29,7 +30,7 @@ const ObjectArrayFieldModal = ({
   emptyIsUndefined = false,
   definitionKey,
   options = {},
-}: Props) => {
+}) => {
   const { value, error, isError, onChange, onBlur } = useFastField<unknown[] | undefined>({ name });
 
   const onFieldChange = useCallback(

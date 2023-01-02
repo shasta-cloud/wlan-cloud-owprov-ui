@@ -1,6 +1,6 @@
 import React from 'react';
-import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 import { useRebootVenueDevices, useUpdateVenueDevices, useUpgradeVenueDevices } from 'hooks/Network/Venues';
 
@@ -9,12 +9,7 @@ interface Props {
   isDisabled: boolean;
 }
 
-const VenueActions = (
-  {
-    venueId,
-    isDisabled
-  }: Props
-) => {
+const VenueActions: React.FC<Props> = ({ venueId, isDisabled }) => {
   const { t } = useTranslation();
   const { mutateAsync: rebootDevices } = useRebootVenueDevices({ id: venueId });
   const updateDevices = useUpdateVenueDevices({ id: venueId });

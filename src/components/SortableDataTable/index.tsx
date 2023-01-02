@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
-import { ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+import { v4 as uuid } from 'uuid';
 import {
   Table,
   Tbody,
@@ -26,14 +26,14 @@ import {
   Heading,
   useBreakpoint,
 } from '@chakra-ui/react';
+import { ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 // @ts-ignore
-import { useTranslation } from 'react-i18next';
 import { useTable, usePagination, useSortBy, Row } from 'react-table';
-import { v4 as uuid } from 'uuid';
-import SortIcon from './SortIcon';
-import { isColumnSorted, isSortedDesc, onSortClick } from './utils';
+import { useTranslation } from 'react-i18next';
 import LoadingOverlay from 'components/LoadingOverlay';
 import { Column, PageInfo, SortInfo } from 'models/Table';
+import SortIcon from './SortIcon';
+import { isColumnSorted, isSortedDesc, onSortClick } from './utils';
 
 interface Props {
   columns: Column[];
@@ -66,7 +66,7 @@ const defaultProps = {
   saveSettingsId: undefined,
 };
 
-const SortableDataTable = ({
+const SortableDataTable: React.FC<Props> = ({
   columns,
   data,
   isLoading,
@@ -82,7 +82,7 @@ const SortableDataTable = ({
   setPageInfo,
   isManual,
   saveSettingsId,
-}: Props) => {
+}) => {
   const { t } = useTranslation();
   const breakpoint = useBreakpoint();
   const textColor = useColorModeValue('gray.700', 'white');

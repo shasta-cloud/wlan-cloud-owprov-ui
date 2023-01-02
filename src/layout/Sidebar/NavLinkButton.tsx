@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { v4 as uuid } from 'uuid';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
+import { Button, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import IconBox from 'components/IconBox';
 import { Route } from 'models/Routes';
 
@@ -14,13 +14,7 @@ interface Props {
   role: string;
 }
 
-const NavLinkButton = (
-  {
-    activeRoute,
-    route,
-    role
-  }: Props
-) => {
+const NavLinkButton: React.FC<Props> = ({ activeRoute, route, role }) => {
   const { t } = useTranslation();
   const activeTextColor = useColorModeValue('gray.700', 'white');
   const inactiveTextColor = useColorModeValue('gray.600', 'gray.200');

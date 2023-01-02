@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs, TabList, TabPanels, TabPanel, Tab, SimpleGrid } from '@chakra-ui/react';
-import { Formik, Form, FormikProps } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
+import { Tabs, TabList, TabPanels, TabPanel, Tab, SimpleGrid } from '@chakra-ui/react';
+import { Formik, Form, FormikProps } from 'formik';
 import NotesTable from 'components/CustomFields/NotesTable';
 import StringField from 'components/FormFields/StringField';
 import { SubscriberSchema } from 'constants/formSchemas';
 import { useUpdateSubscriber } from 'hooks/Network/Subscribers';
-import useApiRequirements from 'hooks/useApiRequirements';
 import useMutationResult from 'hooks/useMutationResult';
+import useApiRequirements from 'hooks/useApiRequirements';
 import { Subscriber } from 'models/Subscriber';
 
 interface Props {
@@ -18,14 +18,7 @@ interface Props {
   stopEditing: () => void;
 }
 
-const EditSubscriberForm = (
-  {
-    editing,
-    subscriber,
-    formRef,
-    stopEditing
-  }: Props
-) => {
+const EditSubscriberForm: React.FC<Props> = ({ editing, subscriber, formRef, stopEditing }) => {
   const { t } = useTranslation();
   const [formKey, setFormKey] = useState(uuid());
   const updateSubscriber = useUpdateSubscriber({ id: subscriber?.id });

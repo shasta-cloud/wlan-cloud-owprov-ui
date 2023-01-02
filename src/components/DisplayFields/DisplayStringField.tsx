@@ -15,14 +15,7 @@ const defaultProps = {
   hideButton: false,
 };
 
-const DisplayStringField = (
-  {
-    label,
-    value,
-    isRequired,
-    hideButton
-  }: Props
-) => {
+const DisplayStringField: React.FC<Props> = ({ label, value, isRequired, hideButton }) => {
   const { t } = useTranslation();
   const [show, setShow] = useBoolean();
 

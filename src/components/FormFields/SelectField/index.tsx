@@ -1,14 +1,14 @@
 import React, { useCallback } from 'react';
 import { useField } from 'formik';
-import Field from './FastSelectInput';
 import { defaultFormField, FormFieldProps } from 'models/FormField';
+import Field from './FastSelectInput';
 
 interface Props extends FormFieldProps {
   options: { label: string; value: string | number }[];
 }
 const defaultProps = defaultFormField;
 
-const SelectField = ({
+const SelectField: React.FC<Props> = ({
   options,
   name,
   isDisabled,
@@ -22,7 +22,7 @@ const SelectField = ({
   isInt,
   w,
   definitionKey,
-}: Props) => {
+}) => {
   const [{ value }, { touched, error }, { setValue, setTouched }] = useField(name);
 
   const onChange = useCallback(

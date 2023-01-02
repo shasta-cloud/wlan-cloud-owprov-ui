@@ -1,11 +1,4 @@
-import React, { useMemo } from 'react';
 import { Flex, Heading, SimpleGrid } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
-import { INTERFACE_SSID_MULTIPSK_SCHEMA, NO_MULTI_PROTOS } from '../../interfacesConstants';
-import AccessControlList from './AccessControlList';
-import RateLimit from './RateLimit';
-import Roaming from './Roaming';
-import Rrm from './Rrm';
 import MultiSelectField from 'components/FormFields/MultiSelectField';
 import NumberField from 'components/FormFields/NumberField';
 import ObjectArrayFieldModal from 'components/FormFields/ObjectArrayFieldModal';
@@ -13,6 +6,12 @@ import SelectField from 'components/FormFields/SelectField';
 import StringField from 'components/FormFields/StringField';
 import ToggleField from 'components/FormFields/ToggleField';
 import useFastField from 'hooks/useFastField';
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { INTERFACE_SSID_MULTIPSK_SCHEMA, NO_MULTI_PROTOS } from '../../interfacesConstants';
+import RateLimit from './RateLimit';
+import Roaming from './Roaming';
+import Rrm from './Rrm';
 
 const AdvancedSettings: React.FC<{ editing: boolean; namePrefix: string }> = ({ editing, namePrefix }) => {
   const { t } = useTranslation();
@@ -60,7 +59,7 @@ const AdvancedSettings: React.FC<{ editing: boolean; namePrefix: string }> = ({ 
           {t('configurations.advanced_settings')}
         </Heading>
       </Flex>
-      <SimpleGrid minChildWidth="300px" spacing="20px" mb="20px">
+      <SimpleGrid minChildWidth="300px" spacing="20px">
         <ToggleField
           name={`${namePrefix}.hidden-ssid`}
           label="hidden-ssid"
@@ -172,7 +171,6 @@ const AdvancedSettings: React.FC<{ editing: boolean; namePrefix: string }> = ({ 
       </SimpleGrid>
       <RateLimit editing={editing} namePrefix={`${namePrefix}.rate-limit`} />
       <Rrm editing={editing} namePrefix={`${namePrefix}.rrm`} />
-      <AccessControlList editing={editing} namePrefix={`${namePrefix}.access-control-list`} />
       <Roaming editing={editing} namePrefix={`${namePrefix}.roaming`} />
     </>
   );

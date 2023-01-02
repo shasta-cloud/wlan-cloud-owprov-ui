@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
 import { useToast } from '@chakra-ui/react';
-import { UseQueryResult } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { UseQueryResult } from 'react-query';
 
 const useFreeTable = ({
   useGet,

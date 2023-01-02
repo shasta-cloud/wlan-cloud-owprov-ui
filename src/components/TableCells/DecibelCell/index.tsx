@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { parseDbm } from 'utils/stringHelper';
 
-const DecibelCell = ({ db }: { db?: number }) => {
+const DecibelCell: React.FC<{ db?: number }> = ({ db }) => {
   const data = useMemo(() => {
     if (db === undefined) return '-';
 

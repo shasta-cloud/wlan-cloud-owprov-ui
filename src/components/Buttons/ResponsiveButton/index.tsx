@@ -11,7 +11,7 @@ interface ResponsiveButtonProps extends LayoutProps, SpaceProps {
   icon?: React.ReactElement;
 }
 
-const ResponsiveButton = ({
+const ResponsiveButton: React.FC<ResponsiveButtonProps> = ({
   onClick,
   isDisabled,
   isLoading,
@@ -20,7 +20,7 @@ const ResponsiveButton = ({
   label,
   icon,
   ...props
-}: ResponsiveButtonProps) => {
+}) => {
   const breakpoint = useBreakpoint();
 
   if (!isCompact && breakpoint !== 'base' && breakpoint !== 'sm') {

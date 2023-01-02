@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from 'react-query';
 import { axiosSec } from 'utils/axiosInstances';
 
 const useGetRequirements = () =>

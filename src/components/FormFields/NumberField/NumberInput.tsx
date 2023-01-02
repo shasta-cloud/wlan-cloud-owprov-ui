@@ -11,8 +11,8 @@ import {
   InputGroup,
   InputRightAddon,
 } from '@chakra-ui/react';
-import ConfigurationFieldExplanation from '../ConfigurationFieldExplanation';
 import { FieldInputProps } from 'models/Form';
+import ConfigurationFieldExplanation from '../ConfigurationFieldExplanation';
 
 interface Props extends FieldInputProps<string | undefined | string[]> {
   onChange: (v: string) => void;
@@ -22,23 +22,21 @@ interface Props extends FieldInputProps<string | undefined | string[]> {
   w?: string | number;
 }
 
-const NumberInput = (
-  {
-    label,
-    value,
-    unit,
-    onChange,
-    onBlur,
-    error,
-    isError,
-    isRequired,
-    hideArrows,
-    element,
-    isDisabled,
-    w,
-    definitionKey
-  }: Props
-) => {
+const NumberInput: React.FC<Props> = ({
+  label,
+  value,
+  unit,
+  onChange,
+  onBlur,
+  error,
+  isError,
+  isRequired,
+  hideArrows,
+  element,
+  isDisabled,
+  w,
+  definitionKey,
+}) => {
   if (element)
     return (
       <FormControl isInvalid={isError} isRequired={isRequired} isDisabled={isDisabled}>

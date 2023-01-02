@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { secondsDuration } from 'utils/dateFormatting';
 
-const DurationCell = ({ seconds }: { seconds?: number }) => {
+const DurationCell: React.FC<{ seconds?: number }> = ({ seconds }) => {
   const { t } = useTranslation();
 
   const data = useMemo(() => {

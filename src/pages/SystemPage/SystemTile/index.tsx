@@ -16,24 +16,23 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { MultiValue, Select } from 'chakra-react-select';
 import { ArrowsClockwise } from 'phosphor-react';
 import { useTranslation } from 'react-i18next';
-import SystemLoggingButton from './LoggingButton';
-import SystemCertificatesTable from './SystemCertificatesTable';
+import { useGetSubsystems, useGetSystemInfo, useReloadSubsystems } from 'hooks/Network/System';
+import FormattedDate from 'components/FormattedDate';
+import { compactSecondsToDetailed } from 'utils/dateFormatting';
+import { MultiValue, Select } from 'chakra-react-select';
+import { EndpointApiResponse } from 'hooks/Network/Endpoints';
 import Card from 'components/Card';
 import CardBody from 'components/Card/CardBody';
-import FormattedDate from 'components/FormattedDate';
-import { EndpointApiResponse } from 'hooks/Network/Endpoints';
-import { useGetSubsystems, useGetSystemInfo, useReloadSubsystems } from 'hooks/Network/System';
-import { compactSecondsToDetailed } from 'utils/dateFormatting';
+import SystemCertificatesTable from './SystemCertificatesTable';
 
 interface Props {
   endpoint: EndpointApiResponse;
   token: string;
 }
 
-const SystemTile = ({ endpoint, token }: Props) => {
+const SystemTile: React.FC<Props> = ({ endpoint, token }) => {
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [subs, setSubs] = useState<{ value: string; label: string }[]>([]);
@@ -69,7 +68,6 @@ const SystemTile = ({ endpoint, token }: Props) => {
         <Box display="flex" mb={2}>
           <Heading pt={0}>{endpoint.type}</Heading>
           <Spacer />
-          <SystemLoggingButton endpoint={endpoint} token={token} />
           <Button
             mt={1}
             minWidth="112px"
@@ -85,51 +83,35 @@ const SystemTile = ({ endpoint, token }: Props) => {
           <VStack w="100%">
             <SimpleGrid minChildWidth="500px" w="100%">
               <Flex>
-                <Heading size="sm" w="150px" my="auto">
-                  {t('system.endpoint')}:
-                </Heading>
+                <Box w="150px">{t('system.endpoint')}:</Box>
                 {endpoint.uri}
               </Flex>
               <Flex>
-                <Heading size="sm" w="150px" my="auto">
-                  {t('system.hostname')}:
-                </Heading>
+                <Box w="150px">{t('system.hostname')}:</Box>
                 {system?.hostname}
               </Flex>
               <Flex>
-                <Heading size="sm" w="150px" my="auto">
-                  {t('system.os')}:
-                </Heading>
+                <Box w="150px">{t('system.os')}:</Box>
                 {system?.os}
               </Flex>
               <Flex>
-                <Heading size="sm" w="150px" my="auto">
-                  {t('system.processors')}:
-                </Heading>
+                <Box w="150px">{t('system.processors')}:</Box>
                 {system?.processors}
               </Flex>
               <Flex>
-                <Heading size="sm" w="150px" my="auto">
-                  {t('system.start')}:
-                </Heading>
+                <Box w="150px">{t('system.start')}:</Box>
                 {system?.start ? <FormattedDate date={system?.start} /> : '-'}
               </Flex>
               <Flex>
-                <Heading size="sm" w="150px" my="auto">
-                  {t('system.uptime')}:
-                </Heading>
+                <Box w="150px">{t('system.uptime')}:</Box>
                 {system?.uptime ? compactSecondsToDetailed(system.uptime, t) : '-'}
               </Flex>
               <Flex>
-                <Heading size="sm" w="150px" my="auto">
-                  {t('system.version')}:
-                </Heading>
+                <Box w="150px">{t('system.version')}:</Box>
                 {system?.version}
               </Flex>
               <Flex>
-                <Heading size="sm" w="150px" my="auto">
-                  {t('certificates.title')}:
-                </Heading>
+                <Box w="150px">{t('certificates.title')}:</Box>
                 {system?.certificates && system.certificates?.length > 0 ? (
                   <Button variant="link" onClick={onOpen} p={0} m={0} maxH={7}>
                     {t('common.details')} {system.certificates.length}
@@ -140,9 +122,7 @@ const SystemTile = ({ endpoint, token }: Props) => {
               </Flex>
             </SimpleGrid>
             <Flex w="100%">
-              <Heading size="sm" w="150px" my="auto">
-                {t('system.subsystems')}:
-              </Heading>
+              <Box w="150px">{t('system.subsystems')}:</Box>
               <Box w="400px">
                 <Select
                   chakraStyles={{

@@ -1,16 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Box, Spacer } from '@chakra-ui/react';
-import { UseQueryResult } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { Box, Spacer } from '@chakra-ui/react';
 import { v4 as uuid } from 'uuid';
-import ColumnPicker from 'components/ColumnPicker';
 import FormattedDate from 'components/FormattedDate';
-import SortableDataTable from 'components/SortableDataTable';
-import BooleanCell from 'components/TableCells/BooleanCell';
-import DataCell from 'components/TableCells/DataCell';
-import DecibelCell from 'components/TableCells/DecibelCell';
-import DurationCell from 'components/TableCells/DurationCell';
-import NumberCell from 'components/TableCells/NumberCell';
+import ColumnPicker from 'components/ColumnPicker';
 import {
   useGetClientLifecycle,
   useGetClientLifecycleCount,
@@ -18,26 +11,23 @@ import {
 } from 'hooks/Network/Analytics';
 import useControlledTable from 'hooks/useControlledTable';
 import { Column, SortInfo } from 'models/Table';
+import { UseQueryResult } from 'react-query';
+import SortableDataTable from 'components/SortableDataTable';
+import DecibelCell from 'components/TableCells/DecibelCell';
+import DataCell from 'components/TableCells/DataCell';
+import DurationCell from 'components/TableCells/DurationCell';
+import BooleanCell from 'components/TableCells/BooleanCell';
+import NumberCell from 'components/TableCells/NumberCell';
 
-const ClientLifecyleTable = (
-  {
-    venueId,
-    mac,
-    fromDate,
-    endDate,
-    refreshId,
-    timePickers,
-    searchBar
-  }: {
-    venueId: string
-    mac?: string
-    fromDate: number
-    endDate: number
-    refreshId: number
-    timePickers: React.ReactNode
-    searchBar: React.ReactNode
-  }
-) => {
+const ClientLifecyleTable: React.FC<{
+  venueId: string;
+  mac?: string;
+  fromDate: number;
+  endDate: number;
+  refreshId: number;
+  timePickers: React.ReactNode;
+  searchBar: React.ReactNode;
+}> = ({ venueId, mac, fromDate, endDate, refreshId, timePickers, searchBar }) => {
   const { t } = useTranslation();
   const [sortInfo, setSortInfo] = useState<SortInfo>([{ id: 'timestamp', sort: 'dsc' }]);
   const {

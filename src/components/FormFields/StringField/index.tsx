@@ -1,14 +1,14 @@
 import React, { useCallback } from 'react';
-import { LayoutProps } from '@chakra-ui/react';
-import StringInput from './StringInput';
 import useFastField from 'hooks/useFastField';
 import { FieldProps } from 'models/Form';
+import { LayoutProps } from '@chakra-ui/react';
+import StringInput from './StringInput';
 
 interface Props extends FieldProps, LayoutProps {
   hideButton?: boolean;
 }
 
-const StringField = ({
+const StringField: React.FC<Props> = ({
   name,
   isDisabled = false,
   label,
@@ -19,7 +19,7 @@ const StringField = ({
   emptyIsUndefined = false,
   definitionKey,
   ...props
-}: Props) => {
+}) => {
   const { value, error, isError, onChange, onBlur } = useFastField<string | undefined>({ name });
 
   const onFieldChange = useCallback(

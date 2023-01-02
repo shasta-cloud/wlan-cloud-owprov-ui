@@ -5,11 +5,7 @@ interface Props {
   children: ReactNode;
 }
 
-const PanelContent = (
-  {
-    children
-  }: Props
-) => {
+const PanelContent: React.FC<Props> = ({ children }) => {
   const styles = useStyleConfig('PanelContent');
 
   return <Box __css={styles}>{children}</Box>;
